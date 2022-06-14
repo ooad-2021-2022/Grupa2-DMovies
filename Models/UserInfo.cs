@@ -11,9 +11,7 @@ namespace DMovies.Models
         [Key]
         public int Id { get; set; } 
         [ForeignKey("IdentityUser")]
-        public int IDUser { get; set; }
         public IdentityUser user { get; set; }
-        public string UserName { get; set; }    
         public int tip { get; set; }    
     }
 }

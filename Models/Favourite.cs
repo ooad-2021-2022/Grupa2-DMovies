@@ -11,10 +11,8 @@ namespace DMovies.Models
         }
         
         [ForeignKey("Movie")]
-        public int movieId { get; set; }
         public Movie movie { get; set; }
         [ForeignKey("UserInfo")]
-        public int userId { get; set; }
         public UserInfo user { get; set; }  
 
 

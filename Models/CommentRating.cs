@@ -14,10 +14,8 @@ namespace DMovies.Models
         public double rating { get; set; }
         public string comment { get; set; }
         [ForeignKey("Movie")]
-        public int movieId { get; set; }
         public Movie movie { get; set; }
         [ForeignKey("UserInfo")]
-        public int userId { get; set; }
         public UserInfo userInfo{ get; set; }
                     
 

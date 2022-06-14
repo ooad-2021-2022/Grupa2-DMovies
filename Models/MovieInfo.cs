@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMovies.Models
 {
+
     public class MovieInfo
     {
         public MovieInfo()

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DMovies.Data.Migrations
+namespace DMovies.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220613103715_dua")]
-    partial class dua
+    [Migration("20220613225658_nova")]
+    partial class nova
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,11 +41,14 @@ namespace DMovies.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Movie")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserInfo")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("comment")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("movieId")
-                        .HasColumnType("int");
 
                     b.Property<double>("rating")
                         .HasColumnType("float");
@@ -53,27 +56,19 @@ namespace DMovies.Data.Migrations
                     b.Property<int>("reports")
                         .HasColumnType("int");
 
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userInfoId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("movieId");
+                    b.HasIndex("Movie");
 
-                    b.HasIndex("userInfoId");
+                    b.HasIndex("UserInfo");
 
                     b.ToTable("CommentRating");
                 });
 
             modelBuilder.Entity("DMovies.Models.DownloadLinks", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int?>("Movie")
+                        .HasColumnType("int");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -81,25 +76,22 @@ namespace DMovies.Data.Migrations
                     b.Property<int>("resolution")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasIndex("Movie");
 
                     b.ToTable("DownloadLinks");
                 });
 
             modelBuilder.Entity("DMovies.Models.Favourite", b =>
                 {
-                    b.Property<int>("movieId")
+                    b.Property<int?>("Movie")
                         .HasColumnType("int");
 
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userId1")
+                    b.Property<string>("UserInfo")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("movieId");
+                    b.HasIndex("Movie");
 
-                    b.HasIndex("userId1");
+                    b.HasIndex("UserInfo");
 
                     b.ToTable("Favourite");
                 });
@@ -111,13 +103,7 @@ namespace DMovies.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("downloadLinkId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("linksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movieInfoId")
+                    b.Property<int?>("MovieInfo")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
@@ -131,9 +117,7 @@ namespace DMovies.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("linksId");
-
-                    b.HasIndex("movieInfoId");
+                    b.HasIndex("MovieInfo");
 
                     b.ToTable("Movie");
                 });
@@ -360,16 +344,13 @@ namespace DMovies.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<int>("IDUser")
-                        .HasColumnType("int");
+                    b.Property<string>("IdentityUser")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("tip")
                         .HasColumnType("int");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("userId");
+                    b.HasIndex("IdentityUser");
 
                     b.ToTable("UserInfo");
                 });
@@ -389,30 +370,35 @@ namespace DMovies.Data.Migrations
                 {
                     b.HasOne("DMovies.Models.Movie", "movie")
                         .WithMany()
-                        .HasForeignKey("movieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Movie");
 
                     b.HasOne("DMovies.Models.UserInfo", "userInfo")
                         .WithMany()
-                        .HasForeignKey("userInfoId");
+                        .HasForeignKey("UserInfo");
 
                     b.Navigation("movie");
 
                     b.Navigation("userInfo");
                 });
 
+            modelBuilder.Entity("DMovies.Models.DownloadLinks", b =>
+                {
+                    b.HasOne("DMovies.Models.Movie", "movie")
+                        .WithMany()
+                        .HasForeignKey("Movie");
+
+                    b.Navigation("movie");
+                });
+
             modelBuilder.Entity("DMovies.Models.Favourite", b =>
                 {
                     b.HasOne("DMovies.Models.Movie", "movie")
                         .WithMany()
-                        .HasForeignKey("movieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Movie");
 
                     b.HasOne("DMovies.Models.UserInfo", "user")
                         .WithMany()
-                        .HasForeignKey("userId1");
+                        .HasForeignKey("UserInfo");
 
                     b.Navigation("movie");
 
@@ -421,17 +407,9 @@ namespace DMovies.Data.Migrations
 
             modelBuilder.Entity("DMovies.Models.Movie", b =>
                 {
-                    b.HasOne("DMovies.Models.DownloadLinks", "links")
-                        .WithMany()
-                        .HasForeignKey("linksId");
-
                     b.HasOne("DMovies.Models.MovieInfo", "movieInfo")
                         .WithMany()
-                        .HasForeignKey("movieInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("links");
+                        .HasForeignKey("MovieInfo");
 
                     b.Navigation("movieInfo");
                 });
@@ -497,7 +475,7 @@ namespace DMovies.Data.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "user")
                         .WithMany()
-                        .HasForeignKey("userId");
+                        .HasForeignKey("IdentityUser");
 
                     b.Navigation("user");
                 });

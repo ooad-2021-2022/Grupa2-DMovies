@@ -13,12 +13,8 @@ namespace DMovies.Models
         public int Id { get; set; }
         public string name { get; set; }    
         public double rating { get; set; }
-        [ForeignKey("DownloadLinks")]
-        public int downloadLinkId { get; set; }
-        public DownloadLinks links { get; set; }
         public string streamLink { get; set; }
         [ForeignKey("MovieInfo")]
-        public int movieInfoId { get; set; }
         public MovieInfo movieInfo { get; set; }    
 
     }

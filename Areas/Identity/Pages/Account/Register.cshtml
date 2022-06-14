@@ -1,0 +1,50 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<div style="width:100%; text-align:center;  vertical-align: middle; padding-top:200px;">
+    <div style="display:inline-block;background-color:#212121; padding:20px;border: 5px solid #006312;border-radius: 20px;">
+        <h1 class="tekst" style="text-align:center;">Create account</h1>
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div style="width:100%; text-align:center; ">  
+            @Html.Hidden("Select", (object)ViewBag.Select)
+            <select asp-for="Input.Role" name="role" id="role" style="align:center;"class="inpu zelenibord1">
+              <option selected="selected" value="registerd">RegisteredUser</option>
+              <option value="critic">Critic</option>
+              <option value="editor">Editor</option>        
+              <option value="admin">admin</option>
+            </select></div>
+            <div style="width:100%; text-align:center; padding-top:10px;"class="form-group">
+                <input asp-for="Input.Username"style="min-width:250px;" class="inpu zelenibord1" placeholder="Username" />
+                <br />
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
+            </div>
+            <div style="width:100%; text-align:center;"class="form-group">
+                <input asp-for="Input.Email" style="min-width:250px;" class="inpu zelenibord1" placeholder="Email" />
+                <br />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div style="width:100%; text-align:center;"class="form-group">
+                <input asp-for="Input.Password" style="min-width:250px;" class="inpu zelenibord1" placeholder="Password" />
+                  <br />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+           
+               <div style="width:100%; text-align:center;"class="form-group">
+                <input asp-for="Input.ConfirmPassword" style="min-width:250px;" class="inpu zelenibord1" placeholder="Confirm password" />
+                  <br />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div style="width:100%; text-align:center;">
+                    <button style="width:100px; border-radius: 20px;background-color: #006312;color: #212121;border: 5px solid #006312;" type="submit" ><b>Register</b></button>
+                </div>
+            </form>
+        </div>
+  </div>
+  
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

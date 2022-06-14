@@ -1,0 +1,33 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+<div style="position: absolute;left:50%; top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%); background-color:#212121; padding:20px;border: 5px solid #006312;border-radius: 20px;" >
+    <h1  class="tekst" style="text-align:center;">@ViewData["Title"]</h1>
+    <div  style="align:center; width:100%;" >
+        <section style="width:100%; ">
+            <form id="account" method="post">
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <input  asp-for="Input.Email" style="min-width:250px;" class="inpu zelenibord1" placeholder="Email" />
+                    <span asp-validation-for="Input.Email" class="text-danger inpu"></span>
+                </div>
+                <div class="form-group" >
+                    <input  asp-for="Input.Password" style="min-width:250px;background-color:#212121; background:#212121 !important; color:#006312 !important" class="zelenibord1" placeholder="Password"  />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+               <div style="width:100%; text-align:center;">
+                    <button style="width:100px; border-radius: 20px;background-color: #006312;color: #212121;border: 5px solid #006312;" type="submit" ><b>Log in</b></button>
+                </div>
+             
+            </form>
+        </section>
+    </div>
+   </div> 
+   
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -6,7 +6,32 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
+.inpu {
+    background-color: #212121;
+    color: #006312;
+}
 
+.tekst{
+    color: #006312;
+
+}
+.zelenibord{
+    border: 4px solid #006312;
+    border-radius:5px;
+}
+.zelenibord1 {
+    border: 4px solid #006312;
+    border-radius: 5px;
+}
+.zelenibord1:focus {
+    border: 4px solid #006312;
+    border-radius: 5px;
+    outline:3px solid #49b618;
+}
+.sivibg {
+    background-color: #212121;
+    color: #006312;
+}
 .mojli {
     align-items: center;
     display:flex;
@@ -20,7 +45,7 @@ a.navbar-brand {
 }
 .mojsearch {
     border-radius: 20px;
-    color: #1e1e1e;
+    color: #212121;
     display: flex;
     padding-left:8px;
     align-items: center;

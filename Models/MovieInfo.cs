@@ -15,4 +15,4 @@ namespace DMovies.Models
         public string director { get; set; }
                                                     
     }
-}
+}   

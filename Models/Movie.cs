@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMovies.Models
@@ -16,6 +18,6 @@ namespace DMovies.Models
         public string streamLink { get; set; }
         [ForeignKey("MovieInfo")]
         public MovieInfo movieInfo { get; set; }    
-
+        public ICollection<Actor> actors { get; set; }
     }
 }

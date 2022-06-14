@@ -5,16 +5,14 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="zelena-nav" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-    </li>
-    <li class="nav-item">
+    
+    <li class="mojli">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <button  type="submit" class="mojbutton">Logout</button>
         </form>
     </li>
        <li class="nav-item">
-    <img width="50" height="50" src="https://i.ibb.co/vB2zN98/logoZ.png"/>
+   <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"> <img width="50" height="50" src="https://i.ibb.co/vB2zN98/logoZ.png"/></a>
       </li>          
 }
 else

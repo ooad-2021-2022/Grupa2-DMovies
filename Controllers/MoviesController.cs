@@ -7,12 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DMovies.Data;
 using DMovies.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using System.Text.Json;
+using static DMovies.Models.JSON;
 
 namespace DMovies.Controllers
 {
     public class MoviesController : Controller
     {
+        private HttpClient httpClient=new HttpClient();
         private readonly ApplicationDbContext _context  ;
+        private string apikey = "574fa1986673102f483efa843989bba6";
+
+        public object JasonSerialize { get; private set; }
 
         public MoviesController(ApplicationDbContext context)
         {
@@ -22,7 +30,36 @@ namespace DMovies.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movie.ToListAsync());
+            List<Movie> movies = await _context.Movie.ToListAsync();
+           
+                try
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        IncludeFields = true,
+                    };
+                
+                    string responseBody = await httpClient.GetStringAsync("https://api.themoviedb.org/3/search/movie?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1&include_adult=false&query=moj%20moj");
+                string responseBody1 = await httpClient.GetStringAsync("https://api.themoviedb.org/3/movie/%7Bmovie_id%7D?api_key=574fa1986673102f483efa843989bba6&language=en-U");
+
+                var mov = JsonSerializer.Deserialize<Search>(responseBody, options)!;
+                for (int i = 0; i < mov.results.Count; i++)
+                {
+                    Movie mk = new Movie();
+                    mk.rating=mov.results[i].id;
+                    mk.streamLink = mov.results[i].release_date;
+                    mk.name = mov.results[i].title;
+                    movies.Add(mk);
+                }
+                    Console.WriteLine(responseBody);
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+       
+            return View(movies);
         }
 
         // GET: Movies/Details/5
@@ -44,6 +81,7 @@ namespace DMovies.Controllers
         }
 
         // GET: Movies/Create
+        [Authorize(Roles = "admin, editor")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +92,7 @@ namespace DMovies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> Create([Bind("Id,name,rating,streamLink")] Movie movie)
         {
             if (ModelState.IsValid)
@@ -66,6 +105,8 @@ namespace DMovies.Controllers
         }
 
         // GET: Movies/Edit/5
+
+        [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +127,7 @@ namespace DMovies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,name,rating,streamLink")] Movie movie)
         {
             if (id != movie.Id)
@@ -117,6 +159,8 @@ namespace DMovies.Controllers
         }
 
         // GET: Movies/Delete/5
+
+        [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +181,7 @@ namespace DMovies.Controllers
         // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var movie = await _context.Movie.FindAsync(id);

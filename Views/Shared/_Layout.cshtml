@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,14 +19,19 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                         <ul class="navbar-nav flex-grow-1">
+   
+                         @if (SignInManager.IsSignedIn(User))
+                        {
                         <li class="nav-item">
-                            <a class="zelena-nav"  asp-area="" asp-controller="Home" asp-action="Index"><b>Najdraža kategorija:</b></a>
+                            <a class="zelena-nav"  asp-area="" asp-controller="Movies" asp-action="Index"><b>Najdraža kategorija:</b></a>
                         </li>
                         <li class="nav-item">
                             <a class="zelena-nav" asp-area="" asp-controller="Home" asp-action="Privacy"><b>Favourite</b></a>
                         </li>
+                        }
                         <li class="mojsearch">
                            
                         <input  class="mojsearch" type="text" placeholder="Search..">

@@ -90,10 +90,7 @@ namespace DMovies.Areas.Identity.Pages.Account
             {
 
                 string k = Request.Form["Select"].ToString();
-                if (k.Contains("admin"))
-                    k = "admin";
-                else if (k.Contains("critic"))
-                    k = "critic";
+                
                 var user = new IdentityUser { UserName = Input.Username, Email = Input.Email ,EmailConfirmed=true};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

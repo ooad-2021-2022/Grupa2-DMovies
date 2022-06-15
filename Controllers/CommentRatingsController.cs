@@ -22,7 +22,7 @@ namespace DMovies.Controllers
         // GET: CommentRatings
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CommentRating.ToListAsync());
+            return View(await _context.CommentRatings.ToListAsync());
         }
 
         // GET: CommentRatings/Details/5
@@ -33,7 +33,7 @@ namespace DMovies.Controllers
                 return NotFound();
             }
 
-            var commentRating = await _context.CommentRating
+            var commentRating = await _context.CommentRatings
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (commentRating == null)
             {
@@ -73,7 +73,7 @@ namespace DMovies.Controllers
                 return NotFound();
             }
 
-            var commentRating = await _context.CommentRating.FindAsync(id);
+            var commentRating = await _context.CommentRatings.FindAsync(id);
             if (commentRating == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace DMovies.Controllers
                 return NotFound();
             }
 
-            var commentRating = await _context.CommentRating
+            var commentRating = await _context.CommentRatings
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (commentRating == null)
             {
@@ -139,15 +139,15 @@ namespace DMovies.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var commentRating = await _context.CommentRating.FindAsync(id);
-            _context.CommentRating.Remove(commentRating);
+            var commentRating = await _context.CommentRatings.FindAsync(id);
+            _context.CommentRatings.Remove(commentRating);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CommentRatingExists(int id)
         {
-            return _context.CommentRating.Any(e => e.Id == id);
+            return _context.CommentRatings.Any(e => e.Id == id);
         }
     }
 }

@@ -1,0 +1,25 @@
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 120px;
+    
+    margin-top: 200px;
+}
+
+.roundButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    gap: 5px;
+    padding: 120px;
+    aspect-ratio: 1;
+    
+    background: #414142;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+}

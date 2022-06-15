@@ -1,0 +1,8 @@
+@{
+    ViewData["Title"] = "Add Movie";
+}
+
+<form action="/Editor/UploadMovie" enctype="multipart/form-data" method="post">
+    <input type="file" name="file" accept="video/mp4,video/x-m4v,video/*"/>
+    <input type="submit"/>
+</form>

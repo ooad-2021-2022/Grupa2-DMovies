@@ -16,8 +16,8 @@ namespace DMovies.Controllers
 {
     public class MoviesController : Controller
     {
-        private HttpClient httpClient=new HttpClient();
-        private readonly ApplicationDbContext _context  ;
+        private HttpClient httpClient = new HttpClient();
+        private readonly ApplicationDbContext _context;
         private string apikey = "574fa1986673102f483efa843989bba6";
 
         public object JasonSerialize { get; private set; }
@@ -30,35 +30,38 @@ namespace DMovies.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            List<Movie> movies = await _context.Movie.ToListAsync();
-           
-                try
+            List<Movie> movies = await _context.Movies.ToListAsync();
+
+            try
+            {
+                var options = new JsonSerializerOptions
                 {
-                    var options = new JsonSerializerOptions
-                    {
-                        IncludeFields = true,
-                    };
-                
-                    string responseBody = await httpClient.GetStringAsync("https://api.themoviedb.org/3/search/movie?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1&include_adult=false&query=moj%20moj");
-                string responseBody1 = await httpClient.GetStringAsync("https://api.themoviedb.org/3/movie/%7Bmovie_id%7D?api_key=574fa1986673102f483efa843989bba6&language=en-U");
+                    IncludeFields = true,
+                };
+
+                string responseBody = await httpClient.GetStringAsync(
+                    "https://api.themoviedb.org/3/search/movie?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1&include_adult=false&query=moj%20moj");
+                string responseBody1 = await httpClient.GetStringAsync(
+                    "https://api.themoviedb.org/3/movie/%7Bmovie_id%7D?api_key=574fa1986673102f483efa843989bba6&language=en-U");
 
                 var mov = JsonSerializer.Deserialize<Search>(responseBody, options)!;
                 for (int i = 0; i < mov.results.Count; i++)
                 {
                     Movie mk = new Movie();
-                    mk.rating=mov.results[i].id;
+                    mk.rating = mov.results[i].id;
                     mk.streamLink = mov.results[i].release_date;
                     mk.name = mov.results[i].title;
                     movies.Add(mk);
                 }
-                    Console.WriteLine(responseBody);
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine("\nException Caught!");
-                    Console.WriteLine("Message :{0} ", e.Message);
-                }
-       
+
+                Console.WriteLine(responseBody);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
             return View(movies);
         }
 
@@ -70,7 +73,7 @@ namespace DMovies.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var movie = await _context.Movies
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
@@ -101,6 +104,7 @@ namespace DMovies.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(movie);
         }
 
@@ -114,11 +118,12 @@ namespace DMovies.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
             {
                 return NotFound();
             }
+
             return View(movie);
         }
 
@@ -153,8 +158,10 @@ namespace DMovies.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(movie);
         }
 
@@ -168,7 +175,7 @@ namespace DMovies.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var movie = await _context.Movies
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
@@ -184,15 +191,15 @@ namespace DMovies.Controllers
         [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
-            _context.Movie.Remove(movie);
+            var movie = await _context.Movies.FindAsync(id);
+            _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            return _context.Movies.Any(e => e.Id == id);
         }
     }
 }

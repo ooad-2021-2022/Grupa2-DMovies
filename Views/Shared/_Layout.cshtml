@@ -1,67 +1,74 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - DMovies</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    @RenderSection("Head", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  box-shadow mb-3" style="background-color:#212121;border-bottom:5px solid #006312;">
-            <div class="container">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+        <div class="container">
+            <a href="/">
                 <img width="200" height="100" src="https://i.ibb.co/WPktJVH/Picsart-22-06-13-19-20-29-570.jpg"/>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+            </a>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                         <ul class="navbar-nav flex-grow-1">
-   
-                         @if (SignInManager.IsSignedIn(User))
-                        {
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
                         <li class="nav-item">
-                            <a class="zelena-nav"  asp-area="" asp-controller="Movies" asp-action="Index"><b>Najdraža kategorija:</b></a>
+                            <a class="zelena-nav" asp-area="" asp-controller="Movies" asp-action="Index">
+                                <b>Najdraža kategorija:</b>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="zelena-nav" asp-area="" asp-controller="Home" asp-action="Acc"><b>Favourite</b></a>
+                            <a class="zelena-nav" asp-area="" asp-controller="Home" asp-action="Acc">
+                                <b>Favourite</b>
+                            </a>
                         </li>
-                        }
-                        <li class="mojsearch">
-                           
-                        <input  class="mojsearch" type="text" placeholder="Search..">
-                            </li>
-                        <li class="mojli">
-                             <button class="mojbutton" type="button" >
-                                     Search
-                            </button>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+                    }
+                    <li class="mojsearch">
+
+                        <input class="mojsearch" type="text" placeholder="Search..">
+                    </li>
+                    <li class="mojli">
+                        <button class="mojbutton" type="button">
+                            Search
+                        </button>
+                    </li>
+                </ul>
+                <partial name="_LoginPartial"/>
             </div>
-      
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="footer text-muted">
-        <div class="container">
-            &copy; 2022 - DMovies - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="footer text-muted">
+    <div class="container">
+        &copy; 2022 - DMovies - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

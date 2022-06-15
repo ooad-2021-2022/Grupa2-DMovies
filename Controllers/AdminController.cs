@@ -1,18 +1,18 @@
-﻿using DMovies.Models;
+using System.Diagnostics;
+using DMovies.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Identity;
 
 namespace DMovies.Controllers
 {
-    public class HomeController : Controller
+    public class AdminController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<AdminController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager,
+        public AdminController(ILogger<AdminController> logger, UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
             _logger = logger;
@@ -20,23 +20,9 @@ namespace DMovies.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Index()
+        public IActionResult DeleteUser()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult Acc()
-        {
-            /*
-            if (!_signInManager.IsSignedIn(User))
-                return NotFound();
-               */ 
-            return View();
+            return NoContent();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

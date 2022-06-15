@@ -19,6 +19,7 @@ namespace DMovies.Controllers
         private HttpClient httpClient = new HttpClient();
         private readonly ApplicationDbContext _context;
         private string apikey = "574fa1986673102f483efa843989bba6";
+        private string path = "https://image.tmdb.org/t/p/w185/";
 
         public object JasonSerialize { get; private set; }
 
@@ -30,8 +31,8 @@ namespace DMovies.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            
-            List<Movie> movies = await _context.Movies.ToListAsync();
+
+            List<Movie> movies = new List<Movie>();//await _context.Movies.ToListAsync();
 
             try
             {
@@ -50,7 +51,7 @@ namespace DMovies.Controllers
                 {
                     Movie mk = new Movie();
                     mk.rating = mov[i].id;
-                    mk.streamLink = mov[i].release_date;
+                    mk.streamLink = "https://image.tmdb.org/t/p/w185/" + mov[i].poster_path;
                     mk.name = mov[i].title;
                     movies.Add(mk);
                 }

@@ -1,0 +1,57 @@
+main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    
+    color: white;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+    width: 400px;
+}
+
+.form > input {
+    background: #333333;
+    color: white;
+}
+
+.fileUpload {
+    position: relative;
+    width: 700px;
+    height: 350px;
+    background: #333333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.fileUpload img {
+    width: 100px;
+    aspect-ratio: 1;
+}
+
+input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+    
+    height: 100%;
+    width: 100%;
+}
+
+input[type="submit"] {
+    color: white;
+}

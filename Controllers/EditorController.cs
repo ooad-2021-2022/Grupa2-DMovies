@@ -59,10 +59,13 @@ namespace DMovies.Controllers
 
             Console.WriteLine("IMDB ID: " + imdbMovieId);
 
+            using var transaction = _dbContext.Database.BeginTransaction();
+            
             var movieInfo = new MovieInfo();
             movieInfo.imdbMovieId = imdbMovieId;
             _dbContext.MovieInfos.Add(movieInfo);
-
+            await _dbContext.SaveChangesAsync();
+            
             var movie = new Movie();
             movie.data = content;
             movie.contentType = file.ContentType;
@@ -71,6 +74,7 @@ namespace DMovies.Controllers
             _dbContext.Movies.Add(movie);
             await _dbContext.SaveChangesAsync();
 
+            await transaction.CommitAsync();
 
             return RedirectToAction("AddMovie");
         }

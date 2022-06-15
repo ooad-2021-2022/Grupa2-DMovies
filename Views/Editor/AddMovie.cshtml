@@ -1,10 +1,39 @@
+@section Head
+{
+    <link rel="stylesheet" type="text/css" href="~/css/addmovie.css"/>
+}
+
 @{
     ViewData["Title"] = "Add Movie";
 }
 
-<form action="/Editor/UploadMovie" enctype="multipart/form-data" method="post">
-    <input type="file" name="file" accept="video/mp4,video/x-m4v,video/*"/>
-    <label for="">IMDB URL:</label>
+<form action="/Editor/UploadMovie" enctype="multipart/form-data" method="post" class="form">
+    <div class="fileUpload">
+        <input type="file" name="file" accept="video/mp4,video/x-m4v,video/*" class="fileInput" id="file"/>
+        <img src="https://icon-library.com/images/332-01-512.png"/>
+        <div id="tekst">Drag and drop movie file</div>
+    </div>
+    <label for="imdbUrl">IMDB URL:</label>
     <input type="text" id="imdbUrl" name="imdbUrl"/>
-    <input type="submit"/>
+    <input type="submit" value="Submit"/>
 </form>
+
+<script>
+let fileInput = document.getElementById("file");
+let tekst = document.getElementById("tekst");
+
+if (fileInput.value)
+    tekst.innerText = fileInput.value
+
+fileInput.onchange = function (e) {
+    let fullPath = fileInput.value
+    if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+    }
+    tekst.innerText = filename;
+}
+</script>

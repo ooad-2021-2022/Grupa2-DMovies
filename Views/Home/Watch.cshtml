@@ -1,5 +1,7 @@
 @using DMovies.Data
 @using Microsoft.EntityFrameworkCore
+@using System.Net.Http
+@using System.Text.Json
 @inject ApplicationDbContext DbContext
 
 @section Head {
@@ -16,20 +18,60 @@
     catch (Exception e)
     {
         Console.WriteLine(e);
+        throw e;
     }
+
+    var movieInfo = await DbContext.MovieInfos.Where(mi => mi.Id == movie.movieInfoId).FirstAsync();
+    var httpClient = new HttpClient();
+    var response = await httpClient.GetStringAsync("https://imdb-api.com/api/title/k_n7n6c7jp/" + movieInfo.imdbMovieId);
+    Console.WriteLine(response);
+    var options = new JsonSerializerOptions
+    {
+        IncludeFields = true
+    };
+    var imdbData = JsonSerializer.Deserialize<JSON.IMDBMovie>(response, options)!;
+    var ratings = JsonSerializer.Deserialize<JSON.IMDBRatings>(await httpClient.GetStringAsync("https://imdb-api.com/api/ratings/k_n7n6c7jp/" + movieInfo.imdbMovieId));
 }
 
 @if (movie != null)
 {
     <div class="content">
-        @if (movie.data != null)
-        {
-            <video src="/Movies/Download/@(id)" class="video" autoplay controls/>
-        }
-        else
-        {
-            <video src="@(movie.streamLink)" class="video" autoplay controls/>
-        }
+        <div class="left">
+            @if (movie.data != null)
+            {
+                <video class="video" src="/Movies/Download/@(id)" controls></video>
+            }
+            else
+            {
+                <video class="video" src="@(movie.streamLink)" class="video" controls></video>
+            }
+            <div style="font-size: 24px; font-weight: bold; color: #999999">DOWNLOAD MOVIE</div>
+            <div class="downloadButtons">
+                <a href="/Movies/Download/@(movie.Id)" download>
+                    <button class="download">144p</button>
+                </a>
+                <a href="/Movies/Download/@(movie.Id)" download>
+                    <button class="download">360p</button>
+                </a>
+                <a href="/Movies/Download/@(movie.Id)" download>
+                    <button class="download">720p</button>
+                </a>
+            </div>
+            <div style="width: 100%; text-align: left">
+                <div style="margin-bottom: 25px; font-size: 20px; font-weight: bold">Synopsis</div>
+                @(imdbData.plot)
+            </div>
+        </div>
+        <div class="right">
+            <div class="movieInfo">
+                <div>Title: @(imdbData.title)</div>
+                <div>Genres:</div>
+                <div>@(imdbData.genres)</div>
+                <div>IMDb: @(ratings.imDb)</div>
+                <div>Year: @(ratings.year)</div>
+                <div>Stars: @(imdbData.stars)</div>
+            </div>
+        </div>
     </div>
 }
 else

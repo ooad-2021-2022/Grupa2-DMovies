@@ -53,7 +53,7 @@ namespace DMovies.Controllers
                         IncludeFields = true
                     };
                     string responseBody =
-                        await httpClient.GetStringAsync("https://imdb-api.com/api/title/k_2ytjntv6/" +
+                        await httpClient.GetStringAsync("https://imdb-api.com/api/title/k_n7n6c7jp/" +
                                                         movieInfo.imdbMovieId);
                     var mov = JsonSerializer.Deserialize<IMDBMovie>(responseBody, options)!;
                     Console.WriteLine(responseBody);

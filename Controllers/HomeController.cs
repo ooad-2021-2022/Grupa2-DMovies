@@ -22,7 +22,7 @@ namespace DMovies.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectPermanent("/Movies");
         }
 
         public IActionResult Privacy()

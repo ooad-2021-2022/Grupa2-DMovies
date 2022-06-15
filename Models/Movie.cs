@@ -21,7 +21,7 @@ namespace DMovies.Models
         public int movieInfoId { get; set; }    
         public ICollection<Actor> actors { get; set; }
         [Column("data")]
-        public byte[] data { get; set; }
+        public byte[]? data { get; set; }
         public string contentType { get; set; }
     }
 }

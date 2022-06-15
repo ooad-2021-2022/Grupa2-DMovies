@@ -22,7 +22,14 @@
 @if (movie != null)
 {
     <div class="content">
-        <video src="/Movies/Download/@(id)" class="video" autoplay controls/>
+        @if (movie.data != null)
+        {
+            <video src="/Movies/Download/@(id)" class="video" autoplay controls/>
+        }
+        else
+        {
+            <video src="@(movie.streamLink)" class="video" autoplay controls/>
+        }
     </div>
 }
 else

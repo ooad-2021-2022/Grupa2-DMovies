@@ -1,6 +1,7 @@
 
 .content {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 120px;
@@ -15,7 +16,7 @@
     justify-content: center;
     
     gap: 5px;
-    padding: 120px;
+    padding: 80px;
     aspect-ratio: 1;
     
     background: #414142;

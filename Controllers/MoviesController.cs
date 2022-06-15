@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -244,6 +246,25 @@ namespace DMovies.Controllers
             _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet, ActionName("Download")]
+        public async Task<IActionResult> DownloadMovie([FromRoute] int id)
+        {
+            Movie movie;
+            try
+            {
+                movie = await _context.Movies.Where(m => m.Id == id).FirstAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return NotFound();
+            }
+
+            Console.WriteLine(movie.contentType);
+            
+            return File(movie.data, movie.contentType);
         }
 
         private bool MovieExists(int id)

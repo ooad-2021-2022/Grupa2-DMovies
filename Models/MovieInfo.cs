@@ -13,6 +13,6 @@ namespace DMovies.Models
         public int Id { get; set; }
         public string synopsis { get; set; }
         public string director { get; set; }
-                                                    
+        public string imdbMovieId { get; set; }
     }
 }   

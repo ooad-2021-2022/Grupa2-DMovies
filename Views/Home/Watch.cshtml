@@ -1,0 +1,31 @@
+@using DMovies.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext DbContext
+
+@section Head {
+    <link rel="stylesheet" href="~/css/watch.css" type="text/css"/>
+}
+
+@{
+    int id = Int32.Parse((string) ViewContext.RouteData.Values["id"]);
+    Movie movie = null;
+    try
+    {
+        movie = await DbContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+    }
+}
+
+@if (movie != null)
+{
+    <div class="content">
+        <video src="/Movies/Download/@(id)" class="video" autoplay controls/>
+    </div>
+}
+else
+{
+    <div>Movie not found</div>
+}

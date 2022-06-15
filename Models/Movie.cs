@@ -19,5 +19,8 @@ namespace DMovies.Models
         [ForeignKey("MovieInfo")]
         public MovieInfo movieInfo { get; set; }    
         public ICollection<Actor> actors { get; set; }
+        [Column("data")]
+        public byte[] data { get; set; }
+        public string contentType { get; set; }
     }
 }

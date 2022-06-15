@@ -47,6 +47,7 @@ namespace DMovies
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddAntiforgery();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

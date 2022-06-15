@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Search results</h1>
+<body class="sivibg">
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,7 +13,9 @@
     <thead>
         <tr>
             <th>
+                
                 @Html.DisplayNameFor(model => model.name)
+                </div>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rating)
@@ -26,21 +29,22 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="tekst">
                 @Html.DisplayFor(modelItem => item.name)
             </td>
-            <td>
+            <td class="tekst">
                 @Html.DisplayFor(modelItem => item.rating)
             </td>
-            <td>
+            <td class="tekst">
                 @Html.DisplayFor(modelItem => item.streamLink)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td >
+                <a class="tekst" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a class="tekst" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a class="tekst" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</body>

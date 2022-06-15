@@ -23,6 +23,12 @@ namespace DMovies.Models
         {
            public  List<Movie1> movies { get; set; } 
         }
+
+        public class IMDBMovie
+        {
+            public string title { get; set; }
+            public string image { get; set; }
+        }
         public class Search
         {
             [JsonInclude]

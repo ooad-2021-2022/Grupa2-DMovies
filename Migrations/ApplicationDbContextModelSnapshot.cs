@@ -123,7 +123,7 @@ namespace DMovies.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MovieInfo")
+                    b.Property<int>("MovieInfoId")
                         .HasColumnType("int");
 
                     b.Property<string>("contentType")
@@ -144,7 +144,7 @@ namespace DMovies.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieInfo");
+                    b.HasIndex("MovieInfoId");
 
                     b.ToTable("Movie");
                 });
@@ -454,7 +454,9 @@ namespace DMovies.Migrations
                 {
                     b.HasOne("DMovies.Models.MovieInfo", "movieInfo")
                         .WithMany()
-                        .HasForeignKey("MovieInfo");
+                        .HasForeignKey("MovieInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("movieInfo");
                 });

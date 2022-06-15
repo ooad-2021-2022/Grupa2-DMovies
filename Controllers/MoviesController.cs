@@ -33,65 +33,71 @@ namespace DMovies.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
+            List<Movie> movies = await _context.Movies.ToListAsync();
+            List<MovieInfo> movieInfos = new List<MovieInfo>();
+            IEnumerable<MovieData> movieDatas = null;
 
-            List<Movie> movies = new List<Movie>();//await _context.Movies.ToListAsync();
+            for (int i = 0; i < movies.Count; i++)
+            {
+                var movie = movies[i];
+                movieInfos.Add(await _context.MovieInfos.Where(mi => mi.Id == movie.movieInfoId).FirstAsync());
+            }
 
             try
             {
-                var options = new JsonSerializerOptions
+                movieDatas = await Task.WhenAll(movies.Select(async (m, i) =>
                 {
-                    IncludeFields = true,
-                };
-
-                string responseBody = await httpClient.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1");
-                /*  string responseBody1 = await httpClient.GetStringAsync(
-                      "https://api.themoviedb.org/3/movie/%7Bmovie_id%7D?api_key=574fa1986673102f483efa843989bba6&language=en-U");
-                */
-                var mov = JsonSerializer.Deserialize<Search>(responseBody, options)!.results;
-                if(mov!=null)
-                for (int i = 0; i < mov.Count; i++)
-                {
-                    Movie mk = new Movie();
-                    mk.rating = mov[i].id;
-                    mk.streamLink = "https://image.tmdb.org/t/p/w185/" + mov[i].poster_path;
-                    mk.name = mov[i].title;
-                    movies.Add(mk);
-                }
-
-                Console.WriteLine(responseBody);
+                    var movieInfo = movieInfos[i];
+                    var options = new JsonSerializerOptions
+                    {
+                        IncludeFields = true
+                    };
+                    string responseBody =
+                        await httpClient.GetStringAsync("https://imdb-api.com/api/title/k_2ytjntv6/" +
+                                                        movieInfo.imdbMovieId);
+                    var mov = JsonSerializer.Deserialize<IMDBMovie>(responseBody, options)!;
+                    Console.WriteLine(responseBody);
+                    Console.WriteLine("\n\n");
+                    return new MovieData
+                    {
+                        title = movies[i].name ?? mov.title,
+                        imageUrl = mov.image,
+                        id = m.Id
+                    };
+                }));
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
+                Console.WriteLine(e.Message);
             }
-            
-            return View(movies);
-        }
 
+            return View(movieDatas);
+        }
 
         public async Task<IActionResult> Search()
         {
             return View();
         }
 
-        public async Task<IActionResult> SearchResults([Bind("name")] Movie  list)
+        public async Task<IActionResult> SearchResults([Bind("name")] Movie list)
         {
             List<Movie> movies = new List<Movie>();
-          
-               string t= list.name;
-            Search mov=null;
+
+            string t = list.name;
+            Search mov = null;
             try
             {
                 var options = new JsonSerializerOptions
                 {
                     IncludeFields = true,
                 };
-                var byt=System.Text.Encoding.ASCII.GetBytes(t);
+                var byt = System.Text.Encoding.ASCII.GetBytes(t);
                 var quer = System.Text.Encoding.UTF8.GetString(byt);
-                string responseBody = await httpClient.GetStringAsync("https://api.themoviedb.org/3/search/movie?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1&include_adult=false&query="+quer);
-                
-                 mov = JsonSerializer.Deserialize<Search>(responseBody, options)!;
+                string responseBody = await httpClient.GetStringAsync(
+                    "https://api.themoviedb.org/3/search/movie?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1&include_adult=false&query=" +
+                    quer);
+
+                mov = JsonSerializer.Deserialize<Search>(responseBody, options)!;
                 for (int i = 0; i < mov.results.Count; i++)
                 {
                     Movie mk = new Movie();
@@ -108,6 +114,7 @@ namespace DMovies.Controllers
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
+
             Movie mk5 = new Movie();
             mk5.name = t;
             mk5.streamLink = t;
@@ -263,7 +270,7 @@ namespace DMovies.Controllers
             }
 
             Console.WriteLine(movie.contentType);
-            
+
             return File(movie.data, movie.contentType);
         }
 
@@ -272,4 +279,11 @@ namespace DMovies.Controllers
             return _context.Movies.Any(e => e.Id == id);
         }
     }
+}
+
+public class MovieData
+{
+    public string title { get; set; }
+    public string imageUrl { get; set; }
+    public int id { get; set; }
 }

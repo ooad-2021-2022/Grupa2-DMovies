@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DMovies.Data;
 using DMovies.Models;
@@ -54,7 +55,9 @@ namespace DMovies.Controllers
             }
 
             var imdbUrl = HttpContext.Request.Form["imdbUrl"].ToString();
-            var imdbMovieId = imdbUrl.Replace("https://www.imdb.com/title/", "").Replace("/", "");
+            var imdbMovieId = new Regex("\\?.*").Replace(imdbUrl.Replace("https://www.imdb.com/title/", "").Replace("/", ""), "");
+
+            Console.WriteLine("IMDB ID: " + imdbMovieId);
 
             var movieInfo = new MovieInfo();
             movieInfo.imdbMovieId = imdbMovieId;
@@ -63,6 +66,7 @@ namespace DMovies.Controllers
             var movie = new Movie();
             movie.data = content;
             movie.contentType = file.ContentType;
+            movie.movieInfoId = movieInfo.Id;
 
             _dbContext.Movies.Add(movie);
             await _dbContext.SaveChangesAsync();

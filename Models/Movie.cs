@@ -17,7 +17,8 @@ namespace DMovies.Models
         public double rating { get; set; }
         public string streamLink { get; set; }
         [ForeignKey("MovieInfo")]
-        public MovieInfo movieInfo { get; set; }    
+        [Column("MovieInfo")]
+        public int movieInfoId { get; set; }    
         public ICollection<Actor> actors { get; set; }
         [Column("data")]
         public byte[] data { get; set; }

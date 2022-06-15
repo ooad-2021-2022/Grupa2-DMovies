@@ -1,0 +1,19 @@
+﻿
+@model DMovies.Models.Movie
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div>
+    <div>
+        
+          
+      <form asp-action="SearchResults" asp-controller="Movies">
+               <input  asp-for="name"   class="mojsearch" type="text"  placeholder="Search..."/>
+                 <button type="submit" class="mojbutton">Search</button>
+                     </form>  
+                
+                   
+                 
+    </div>
+</div>

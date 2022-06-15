@@ -19,6 +19,10 @@ namespace DMovies.Models
             [JsonInclude]
             public string title     { get; set; }
         }
+        public class Latest
+        {
+           public  List<Movie1> movies { get; set; } 
+        }
         public class Search
         {
             [JsonInclude]

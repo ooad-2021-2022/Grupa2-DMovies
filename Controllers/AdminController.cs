@@ -20,6 +20,7 @@ namespace DMovies.Controllers
             _signInManager = signInManager;
         }
 
+
         public IActionResult DeleteUser()
         {
             return NoContent();

@@ -1,28 +1,34 @@
+@using Microsoft.AspNetCore.Identity
+
 @section Head {
     <link rel="stylesheet" type="text/css" href="~/css/profile.css"/>
 }
-
+@inject UserManager<IdentityUser> UserManager
 @{
     /*
     if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "admin"))
         ViewData["Title"] = "User Profile";
     else
     */
+
+    var usr = await UserManager.GetUserAsync(User);
+    var email = usr?.Email;
+    var username = usr?.UserName;
     ViewData["Title"] = "Admin Panel";
 }
 
 <body class="sivibg" style="outline-color:#006312;">
-<div class="sivibg row" style="width:50%;height:100%;float:left; ">
-    <div class="sivibg row" style="width:50%;height:100%;float:left; ">
+<div class="sivibg row" style="width:80%;height:100%;float:left; ">
+    <div class="sivibg row" style="width:50%;height:100%;float:left; "> 
         <img src="https://i.ibb.co/vB2zN98/logoZ.png"/>
     </div>
     <div class="sivibg" style="width:50%;height:100%;float:left; ">
 
-        <h1 style="text-align:center; width:100%; padding-top:77px;">Naziv usera</h1>
+        <h1 style="text-align:center; width:100%; padding-top:77px;">@User.Identity.Name!</h1>
 
-        <h3 style="text-align:center; ">username</h3>
+        <h3 style="text-align:center; ">@username</h3>
         <br/>
-        <h3 style="text-align:center; ">email</h3>
+        <h3 style="text-align:center; ">@email</h3>
     </div>
     <div style="width:100%; ">
         <a style="width:100%; display:block;padding-top:75px;">Show me my favourites</a>
@@ -30,25 +36,25 @@
         <p>Your favourite genre is: </p>
     </div>
 </div>
-<div style="border-left:5px solid #006312; width:50%;height:100%;float:left;">
+<div style="border-left:5px solid #006312; width:20%;height:100%;float:left;">
     <div class="sivibg" style="width:100%;height:100%; text-align:center;">
-        <img src="https://i.ibb.co/vB2zN98/logoZ.png"/>
-    </div>
-    <div class="sivibg" style="width:100%;height:100%;text-align:center; ">
-        <img src="https://i.ibb.co/vB2zN98/logoZ.png"/>
-    </div>
-</div>
-
-<div class="content">
-    <button class="roundButton">
+        
+<div style="width:100%;height:50%; text-align:center; ">
+    <button class="roundButton" style="margine-left:100px;">
         <img src="https://static.thenounproject.com/png/2522343-200.png" width="96" height="96"/>
         <div>Delete user</div>
     </button>
-    <a href="/Editor/AddMovie">
+   
+</div>
+    </div>
+    <div class="sivibg" style="width:100%;height:100%;text-align:center; ">
+         <a href="/Editor/AddMovie"  style="padding-left:100px;" >
         <button class="roundButton">
             <img src="https://icon-library.com/images/332-01-512.png" width="96" height="96"/>
             <div>Add movie</div>
         </button>
     </a>
+    </div>
 </div>
+
 </body>

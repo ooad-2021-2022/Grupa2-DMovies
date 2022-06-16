@@ -41,6 +41,7 @@ namespace DMovies.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin, editor")]
+
         public async Task<IActionResult> UploadMovie([FromForm] IFormFile file = null)
         {
             byte[] content = null;

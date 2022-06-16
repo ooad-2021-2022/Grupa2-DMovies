@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DMovies.Controllers
 {
@@ -30,6 +31,7 @@ namespace DMovies.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin, editor")]
         public IActionResult Acc()
         {
             /*

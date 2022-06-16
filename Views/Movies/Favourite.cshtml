@@ -1,9 +1,8 @@
-﻿@model IEnumerable<MovieData>
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
+﻿@model IEnumerable<DMovies.Models.Movie>
 @{
-    ViewData["Title"] = "Favourite";
+    ViewData["Title"] = "Home Page";
 }
+
 
 <style>
    
@@ -18,19 +17,38 @@
         text-align:center;
         }
      .card {
-      box-shadow: 0 4px 8px 0 rgb(0, 99, 18, 0.9);
+      box-shadow: 0 4px 8px 0 rgb(0,0,0, 0.9);
       transition: 0.3s;
       border-block-color:#212121;
       border-color:#212121;
       color:#212121;
       background-color:#212121;
         }
-    .card:hover {
-      box-shadow: 0 10px 20px 0 rgb(0,0,0, 0.9);
-    }
+        
+    .card:hover{
+      box-shadow: 0 10px 20px 0 rgb(0, 99, 18, 0.9);
+	}
     .card-body{
         text-align:center;
         align-content:center;  
+    }
+    
+.edit {
+    opacity : 0;
+    pointer-events:none;
+    color:white;
+    position:relative;
+    right:0;
+    bottom:0;
+    height:fit-content;
+    width:fit-content;
+    font-size:small;
+    align-content:center;
+    text-align:center;
+}
+    .card-body:hover  .edit{
+    opacity : 1;
+    pointer-events:auto;
     }
     
     .fav{
@@ -45,31 +63,35 @@
 
     }
 
-</style>
-<div class="siva">
+</style> 
+  <div class="siva">
        <div class="fav">  <header> My favourites</header> </div>
-    <div class="mainGroup d-flex flex-wrap justify-content-md-between justify-content-center">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+        <div class="mainGroup d-flex flex-wrap justify-content-md-between justify-content-center">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
 
-            @foreach (var movie in Model)
-            {
-                <div class="col-sm-6 col-md-3" style="margin-bottom:20px;">
-                    <a class="card" href="/Home/Watch/@(movie.id)">
-                        <img src="@movie.imageUrl" class="card-img-top" alt="@movie.title">
+                @foreach (var movie in Model)
+                {
+                   
+                    <div class="col-sm-6 col-md-3" style="margin-bottom:20px;" >
+                        <div class="card"> 
+                            <a >
+                                        <img src="@movie.streamLink" class="card-img-top" alt="@movie.name">
+                                    
+                                    </a>
+                  
+                            <div class="cardBody card-body">
+                                <div style="justify-content:space-between; text-align:center;">
 
-                        <div class="cardBody card-body" href="/Home/Watch/@(movie.id)">
-                            <div style="justify-content:space-between; text-align:center;">
+                                    <div class="title mb-1 mr-4 card-title siva align-content-center" style="width:100%;">@movie.name</div>
+                                    
+                                </div>
 
-                                <div class="title mb-1 mr-4 card-title siva align-content-center" style="width:100%;">@movie.title</div>
-                            
                             </div>
 
                         </div>
-
-                    </a>
-                </div>
-            }
+                    </div>                  
+                }
+            </div>
         </div>
-    </div>
     <div style="height:50px"></div>
 </div>

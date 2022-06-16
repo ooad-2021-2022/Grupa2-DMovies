@@ -1,9 +1,11 @@
-﻿@model IEnumerable<MovieData>
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<DMovies.Models.Movie>
 @{
     ViewData["Title"] = "Home Page";
 }
+
 
 <style>
    
@@ -12,7 +14,6 @@
         height:100%;
         flex-grow : 1;
     }
-    
     .siva{
         background-color:#212121;
         color: white;
@@ -53,7 +54,6 @@
     pointer-events:auto;
     }
     
-    
     .search{
         color:white;
         background-color:#212121;
@@ -66,36 +66,39 @@
 
     }
 
-</style>
-
-<div class="siva">
+</style> 
+  <div class="siva">
        <div class="search">  <header> Search results: </header> </div>
-    <div class="mainGroup d-flex flex-wrap justify-content-md-between justify-content-center">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+        <div class="mainGroup d-flex flex-wrap justify-content-md-between justify-content-center">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
 
-            @foreach (var movie in Model)
-            {
-                <div class="col-sm-6 col-md-3" style="margin-bottom:20px;">
-                    <a class="card" href="/Home/Watch/@(movie.id)">
-                        <img src="@movie.imageUrl" class="card-img-top" alt="@movie.title">
+                @foreach (var movie in Model)
+                {
+                   
+                    <div class="col-sm-6 col-md-3" style="margin-bottom:20px;" >
+                        <div class="card"> 
+                            <a >
+                                        <img src="@movie.streamLink" class="card-img-top" alt="@movie.name">
+                                    
+                                    </a>
+                  
+                            <div class="cardBody card-body">
+                                <div stylnt:space-between; text-align:center;">
 
-                        <div class="cardBody card-body" href="/Home/Watch/@(movie.id)">
-                            <div style="justify-content:space-between; text-align:center;">
-
-                                <div class="title mb-1 mr-4 card-title siva align-content-center" style="width:100%;">@movie.title</div>
-                                 @if (SignInManager.IsSignedIn(User))
+                                    <div class="title mb-1 mr-4 card-title siva align-content-center" style="width:100%;">@movie.name</div>
+                                    @if (SignInManager.IsSignedIn(User))
                                  {
                                      <div class="edit align-content-center">  
                                        <a href="https://ibb.co/GtztcR5"><img src="https://i.ibb.co/GtztcR5/add-to-favorites.png" alt="add-to-favorites" border="0" width="50" height="50"></a> </div>
                                  }
+                                </div>
+
                             </div>
 
                         </div>
-
-                    </a>
-                </div>
-            }
+                    </div>                  
+                }
+            </div>
         </div>
-    </div>
     <div style="height:50px"></div>
 </div>

@@ -101,25 +101,22 @@ namespace DMovies.Controllers
                 for (int i = 0; i < mov.results.Count; i++)
                 {
                     Movie mk = new Movie();
-                    mk.rating = mov.results[i].id;
-                    mk.streamLink = mov.results[i].release_date;
+                    mk.Id= mov.results[i].id;
+                    mk.streamLink = "https://image.tmdb.org/t/p/w185/" + mov.results[i].poster_path;
                     mk.name = mov.results[i].title;
+                    if (mov.results[i].title == null)
+                        mk.name = " ";
+                    if (mov.results[i].poster_path==null)
+                        mk.streamLink = " ";
                     movies.Add(mk);
                 }
 
-                Console.WriteLine(responseBody);
             }
             catch (HttpRequestException e)
             {
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-
-            Movie mk5 = new Movie();
-            mk5.name = t;
-            mk5.streamLink = t;
-            mk5.rating = mov.results.Count;
-            movies.Add(mk5);
             return View(movies.AsEnumerable<Movie>());
         }
 

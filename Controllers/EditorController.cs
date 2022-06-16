@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DMovies.Controllers
 {
@@ -32,13 +33,14 @@ namespace DMovies.Controllers
             _signInManager = signInManager;
             _dbContext = dbContext;
         }
-
+        [Authorize(Roles = "admin, editor")]
         public IActionResult AddMovie()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, editor")]
         public async Task<IActionResult> UploadMovie([FromForm] IFormFile file = null)
         {
             byte[] content = null;
@@ -84,7 +86,7 @@ namespace DMovies.Controllers
         {
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
-
+        [Authorize(Roles = "admin, editor")]
         private string GetImdbId(string imdbUrl)
         {
             return imdbUrl.Replace("https://", "");

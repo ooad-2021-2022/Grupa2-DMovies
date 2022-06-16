@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 @section Head
 {
     <link rel="stylesheet" type="text/css" href="~/css/addmovie.css"/>
@@ -6,7 +8,8 @@
 @{
     ViewData["Title"] = "Add Movie";
 }
-
+@if (SignInManager.IsSignedIn(User))
+                    {
 <form action="/Editor/UploadMovie" enctype="multipart/form-data" method="post" class="form">
     <div class="fileUpload">
         <input type="file" name="file" accept="video/mp4,video/x-m4v,video/*" class="fileInput" id="file"/>
@@ -37,3 +40,4 @@ fileInput.onchange = function (e) {
     tekst.innerText = filename;
 }
 </script>
+}

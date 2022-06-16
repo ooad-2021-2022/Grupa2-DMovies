@@ -78,6 +78,44 @@ namespace DMovies.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Favourite()
+        {
+            List<Movie> movies = new List<Movie>();
+
+           
+            Search mov = null;
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    IncludeFields = true,
+                };
+               
+                string responseBody = await httpClient.GetStringAsync(
+                    "https://api.themoviedb.org/3/movie/upcoming?api_key=574fa1986673102f483efa843989bba6&language=en-US&page=1");
+
+                mov = JsonSerializer.Deserialize<Search>(responseBody, options)!;
+                for (int i = 0; i < mov.results.Count; i++)
+                {
+                    Movie mk = new Movie();
+                    mk.Id = mov.results[i].id;
+                    mk.streamLink = "https://image.tmdb.org/t/p/w185/" + mov.results[i].poster_path;
+                    mk.name = mov.results[i].title;
+                    if (mov.results[i].title == null)
+                        mk.name = " ";
+                    if (mov.results[i].poster_path == null)
+                        mk.streamLink = " ";
+                    movies.Add(mk);
+                }
+
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            return View(movies.AsEnumerable<Movie>());
+        }
 
         public async Task<IActionResult> SearchResults([Bind("name")] Movie list)
         {
